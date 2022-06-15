@@ -1,0 +1,16 @@
+%dw 2.0
+
+type auto_8086ae36_fba4_4dd0_90bc_207623859226_Output_Payload = {
+  valid: Boolean, 
+  number: String, 
+  country_code: String, 
+  carrier: String, 
+  international_format: String, 
+  local_format: String, 
+  country_prefix: String, 
+  line_type: String, 
+  country_name: String, 
+  location: String, 
+  _?: Any
+}
+

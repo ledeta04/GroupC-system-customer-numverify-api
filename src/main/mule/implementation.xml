@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<sub-flow name="implementationSub_Flow" doc:id="8086ae36-fba4-4dd0-90bc-207623859226" >
+	<logger level="INFO" doc:name="Flow Start" doc:id="98028898-acb8-4887-ad9e-ba218975e3c3" message="Flow Start"/>
+		<validation:matches-regex doc:name="Matches regex" doc:id="03dace74-421c-43e8-b0b9-3b927db573f3" regex="^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$" value="#[attributes.queryParams.phoneNumber]" config-ref="Validation_Config" message="Verify Valid Number"/>
+		<http:request method="GET" doc:name="Request" doc:id="42852fae-2ba7-4c09-b372-9f18167839bc" config-ref="HTTP_Request_configuration" path="/validate">
+			<reconnect count="3" />
+			<http:query-params ><![CDATA[#[{
+	"number": attributes.queryParams.phoneNumber,
+	"access_key": Mule::p('secure::api.access_key')
+}]]]></http:query-params>
+		</http:request>
+		<logger level="INFO" doc:name="Flow Completed" doc:id="c8c162ad-aeaa-4138-b904-3c9564a7c019" message="Flow Completed"/>
+	</sub-flow>
+</mule>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+	<http:listener-config name="HTTP_Main_Listener" doc:name="HTTP Listener config" doc:id="7a4e66de-4835-4c92-8462-d967ef4b4339" >
+		<http:listener-connection host="${secure::http.host}" port="${secure::http.port}" />
+	</http:listener-config>
+	<apikit:config outboundHeadersMapName="outboundHeadersMapName" httpStatusVarName="httpStatus" doc:name="Router" doc:id="2ee4ece4-ff97-4b70-a996-b5caba9e1fb6" name="system-customer-numverify-api-config" api="resource::8c06b435-b317-4348-ad6d-40fbd5c1625f:system-customer-numverify-api:1.0.0:raml:zip:system-customer-numverify-api.raml"/>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="d1110368-bc35-4ae4-8a4e-2dd99c8bf857" basePath="/api" >
+		<http:request-connection host="${secure::api.host}"/>
+	</http:request-config>
+	<validation:config name="Validation_Config" doc:name="Validation Config" doc:id="94236a29-23d3-4cef-8076-7a11b9cf74d9"/>
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="2b120a35-bb29-4f80-8a71-a6c1bfc35877" file="dev-secure.yaml" key="ledeta04" >
+		<secure-properties:encrypt algorithm="Blowfish" />
+	</secure-properties:config>
+	<configuration doc:name="Configuration" doc:id="7a6b41d6-ba8d-4ac7-8938-9d877beecc90" defaultErrorHandler-ref="error-responseError_Handler" />
+	<api-gateway:autodiscovery apiId="17900778" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="29a1990b-7ba0-40c8-a1c9-723aa1a7b2d1" flowRef="system-customer-numverify-api-main" />
+</mule>

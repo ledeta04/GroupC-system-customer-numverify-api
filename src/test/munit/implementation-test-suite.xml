@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="implementation-test-suite.xml" />
+	<munit:test name="implementation-test-suite-implementationSub_FlowTest" doc:id="0cff6783-3c22-4b9d-bca7-d92bc0e6d40c" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="94f885d9-c007-4d54-8cd8-7503ce0b2300" processor="validation:matches-regex">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Matches regex" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="03dace74-421c-43e8-b0b9-3b927db573f3" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$" attributeName="regex" />
+					<munit-tools:with-attribute whereValue="#[attributes.queryParams.phoneNumber]" attributeName="value" />
+					<munit-tools:with-attribute whereValue="Validation_Config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to implementationSub_Flow" doc:id="613988a9-8a12-479b-84e8-ea659076fa71" name="implementationSub_Flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="1467d48a-70f6-48b4-a0fc-6d95bf942aa6" actual="#[attributes.statusCode]" expected="200"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
